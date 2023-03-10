@@ -8,36 +8,128 @@
   
   <title>Frontend Mentor | Expenses chart component</title>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  My balance
-  $921.48
+  <main>
+    <section class="header">
+      <div class="header__title">
+        <div class="body-text-normal pb-8">
+          My balance
+        </div>
+        <div class="heading-text-l">
+          $921.48
+        </div>
+      </div>
+      <div class="header__circles">
+        <div class="white-border-circle"></div>
+        <div class="black-circle"></div>
+      </div>
+    </section>
 
-  Spending - Last 7 days
+    <section class="card">
+      <div class="card__title heading-text-l">
+        Spending - Last 7 days
+      </div>
 
-  mon
-  tue
-  wed
-  thu
-  fri
-  sat
-  sun
+      <div class="card__chart chart">
+        <div class="chart__bar" data-value="17.45">
+          <div class="bar" style="height: 50px;"></div>
+          <label class="caption-text">mon</label>
+        </div>
+        <div class="chart__bar" data-value="34.91">
+          <div class="bar" style="height: 100px;"></div>
+          <label class="caption-text">tue</label>
+        </div>
+        <div class="chart__bar" data-value="52.36">
+          <div class="bar bar--active" style="height: 150px;"></div>
+          <label class="caption-text">wed</label>
+        </div>
+        <div class="chart__bar" data-value="31.07">
+          <div class="bar" style="height: 89px;"></div>
+          <label class="caption-text">thu</label>
+        </div>
+        <div class="chart__bar" data-value="23.39">
+          <div class="bar" style="height: 67px;"></div>
+          <label class="caption-text">fri</label>
+        </div>
+        <div class="chart__bar" data-value="43.28">
+          <div class="bar" style="height: 124px;"></div>
+          <label class="caption-text">sat</label>
+        </div>
+        <div class="chart__bar" data-value="25.48">
+          <div class="bar" style="height: 73px;"></div>
+          <label class="caption-text">sun</label>
+        </div>
+      </div>
+      <div class="card__chart-border"></div>
 
-  Total this month
-  $478.33
+      <div class="card__footer">
+        <label class="body-text-normal">Total this month</label>
 
-  +2.4%
-  from last month
+        <div class="card__footer_wrapper">
+          <div class="card__total">
+            <div class="heading-text-xl">$478.33</div>
+          </div>
+
+          <div class="card__percentage">
+            <div class="body-text-bold">+2.4%</div>
+            <label class="body-text-normal">from last month</label>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
   
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
 </body>
+
+
+<script>
+  const bars = document.querySelectorAll('.chart__bar');
+  
+  if (bars && bars.length) {
+    for (let i = 0; i < bars.length; i++) {
+      bars[i].addEventListener("mouseenter", (event) => {
+
+        let el = null;
+        let elValue = '';
+
+        if (event.target.classList.contains('chart__bar')) {
+          el = event.target;
+          elValue = event.target.dataset.value;
+        } else {
+          el = event.target.closest('.chart__bar');
+          elValue = event.target.closest('.chart__bar').dataset.value;
+        }
+
+        const d = document.createElement("div");
+        d.className = 'popover';
+        d.innerHTML = '$' + elValue;
+        el.appendChild(d);
+      });
+
+      bars[i].addEventListener("mouseleave", (event) => {
+        let el = null;
+
+        if (event.target.classList.contains('chart__bar')) {
+          el = event.target;
+        } else {
+          el = event.target.closest('.chart__bar');
+        }
+
+        for (const child of el.children) {
+          if (child.classList.contains('popover')) {
+            child.remove()
+          }
+        }
+      });
+    }
+  }
+
+</script>
 </html>
